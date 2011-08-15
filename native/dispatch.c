@@ -95,6 +95,10 @@ static int _protect;
 extern "C"
 #endif
 
+
+__thread int CB_FLAGS = CB_NORMAL;
+
+
 static jboolean preserve_last_error;
 
 #define MEMCPY(D,S,L) do { \
@@ -3020,6 +3024,16 @@ Java_com_sun_jna_Native_initialize_1ffi_1type(JNIEnv *env, jclass UNUSED(cls), j
   }
   return (jint)type->size;
 }
+
+JNIEXPORT void JNICALL Java_com_sun_jna_Native_noDetach(JNIEnv *env, jclass UNUSED(cls)) {
+    CB_FLAGS = CB_NO_DETACH;
+}
+
+
+JNIEXPORT void JNICALL Java_com_sun_jna_Native_forceDetach(JNIEnv *env, jclass UNUSED(cls)) {
+    CB_FLAGS = CB_FORCE_DETACH;
+}
+
 
 #ifdef __cplusplus
 }

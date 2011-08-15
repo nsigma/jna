@@ -1673,4 +1673,11 @@ public final class Native {
      * @return a direct ByteBuffer that accesses the memory being pointed to, 
      */
     public static native ByteBuffer getDirectByteBuffer(long addr, long length);
+    
+    
+    
+    public static native void noDetach();
+    
+    public static native void forceDetach();
+    
 }

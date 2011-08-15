@@ -397,7 +397,11 @@ callback_dispatch(ffi_cif* cif, void* resp, void** cbargs, void* user_data) {
   
   attached = (*jvm)->GetEnv(jvm, (void *)&env, JNI_VERSION_1_4) == JNI_OK;
   if (!attached) {
-    if ((*jvm)->AttachCurrentThread(jvm, (void *)&env, NULL) != JNI_OK) {
+    JavaVMAttachArgs args;
+    args.version= JNI_VERSION_1_4;
+    args.name="JNA-Native-Callback";
+    args.group=NULL;
+    if ((*jvm)->AttachCurrentThread(jvm, (void *)&env, &args) != JNI_OK) {
       fprintf(stderr, "JNA: Can't attach to current thread\n");
       return;
     }
@@ -413,8 +417,10 @@ callback_dispatch(ffi_cif* cif, void* resp, void** cbargs, void* user_data) {
     (*env)->PopLocalFrame(env, NULL);
   }
   
-  if (!attached) {
+  int cbflgs = CB_FLAGS;
+  if ( (!attached && !(cbflgs == CB_NO_DETACH) ) || (cbflgs == CB_FORCE_DETACH) ) {
     (*jvm)->DetachCurrentThread(jvm);
+    CB_FLAGS = CB_NORMAL;
   }
 }
 

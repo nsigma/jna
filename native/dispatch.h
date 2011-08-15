@@ -101,6 +101,15 @@ typedef struct _callback {
   void* fptr;
 } callback;
 
+
+enum {
+    CB_NORMAL = 0,
+    CB_NO_DETACH = 1,
+    CB_FORCE_DETACH = 2
+};
+
+extern __thread int CB_FLAGS;
+
 #if defined(SOLARIS2) || defined(__GNUC__)
 #if defined(_WIN64)
 #define L2A(X) ((void *)(long long)(X))

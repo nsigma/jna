@@ -7,3 +7,6 @@ bin
 contrib/ntservice/dist
 contrib/platform/dist
 
+/nbproject/private/
+/.settings/
+/dist/
